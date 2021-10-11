@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <title>Planning Poker</title>
+  <meta charset="utf-8">
+  <link href="shared.css" rel="stylesheet">
+  <script type="text/javascript" src="pokerclient.js"></script>
+</head>
+<body>
+  <div id="loginPage" class="active">
+    <h1>Planning poker</h1>
+    <p>Username: 
+      <input type="text"   id="name" maxlength="12" placeholder="Your name">
+      <input type="button" id="login" name="login" value="Log in" onclick="connect()">
+    </p>
+    <div id="loginMessage"></div>
+  </div>
+
+  <div id="lobbyPage">
+    <h1>Planning poker</h1>
+    <div>LOBBY</div>
+    <div>
+      <span>USER: </span><span id="lobbyUsername"></span>
+      <button onclick="logoutIfUserConfirms()">Log out</button>
+    </div>
+    <div>
+      <div class="-vertical-pad">
+        <input type="text"   id="roomName" maxlength="12" placeholder="Room name">
+        <input type="button" id="createRoom" value="Create room" onclick="createRoom()">
+      </div>
+      <table class="-vertical-pad">
+        <thead>
+          <th>Room name</th><th>&nbsp;</th>
+        </thead>
+        <tbody id="roomList">
+        </tbody>
+      </table>
+      <div id="lobbyMessage"></div>
+    </div>
+  </div>
+
+  <div id="roomPage">
+    <div class="roomMain">
+      <div class="-grow">
+        <h1>Planning poker</h1>
+        <div class="-vertical-pad"><button onclick="backToLobby()">Back to Lobby</button></div>
+        <div class="-vertical-pad"><span>ROOM: </span><span id="roomRoomname"></span></div>
+        <div><span>USER: </span><span id="roomUsername"></span></div>
+        <table class="-vertical-pad">
+          <thead>
+            <th>Player</th>
+            <th>Card</th>
+          </thead>
+          <tbody id="playerVotes">
+          </tbody>
+        </table>
+      </div>
+      <div class="-grow roomStoriesContainer">
+        <div class="roomStoriesForm">
+          <textarea id="roomNewStories" placeholder="Add new stories here..."></textarea>
+          <div>
+            <button onclick="addNewStories()">Add Stories</button>
+            <button onclick="exportStories()">Export to Clipboard</button>
+          </div>
+        </div>
+        <div class="-grow scrollable">
+          <div id="roomStories"></div>
+        </div>
+      </div>
+    </div>
+    <div id="cards">
+      <div id="card0" onclick="playCard(this)"><span>0</span></div>
+      <div id="card1" onclick="playCard(this)"><span>&half;</span></div>
+      <div id="card2" onclick="playCard(this)"><span>1</span></div>
+      <div id="card3" onclick="playCard(this)"><span>2</span></div>
+      <div id="card4" onclick="playCard(this)"><span>3</span></div>
+      <div id="card5" onclick="playCard(this)"><span>5</span></div>
+      <div id="card6" onclick="playCard(this)"><span>8</span></div>
+      <div id="card7" onclick="playCard(this)"><span>13</span></div>
+      <div id="card8" onclick="playCard(this)"><span>20</span></div>
+      <div id="card9" onclick="playCard(this)"><span>40</span></div>
+      <div id="card10" onclick="playCard(this)"><span>100</span></div>
+      <div id="card11" onclick="playCard(this)"><span>&infin;</span></div>
+      <div id="card12" onclick="playCard(this)"><span>?</span></div>
+    </div>
+  </div>
+</body>
+</html>
