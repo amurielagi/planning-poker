@@ -53,12 +53,33 @@ body {
   color: red;
   padding: 0 0.2em 0 0.2em;
   border-radius: 1em;
-  font-size: x-small;
+  font-size: small;
   cursor: pointer;
 }
 
 .delete-button.active {
   display: inline-block;
+}
+
+#roomList {
+  color: deepskyblue;
+}
+
+#playerVotesTable {
+  text-align: left;
+}
+
+#playerVotes {
+  font-weight: bold;
+}
+
+.room-player {
+  color: lightseagreen;
+  min-width: 10em;
+}
+
+.player-vote {
+  text-align: center;
 }
 
 #roomList td {
@@ -127,7 +148,23 @@ body {
 
 .story-result {
   position: absolute;
+  right: 2em;
+}
+
+.selected .delete-story {
+  display: inline;
+}
+
+.selected .delete-story:hover {
+  color: brown;
+}
+
+.delete-story {
+  display: none;
+  position: absolute;
   right: 0;
+  font-size: x-large;
+  cursor: pointer;
 }
 
 .selected.-cards-shown .play-story {
@@ -162,6 +199,10 @@ body {
 #roomStories > div.selected {
   background-color:lightgreen;
   border-color: green;
+}
+
+#roomName {
+  width: 20em;
 }
 
 .mdn-disclaimer {

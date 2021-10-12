@@ -7,6 +7,7 @@ var currentStory = null;
 var cardsShown = false;
 const CARD_VALUE = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
 const CARD_DISPLAY =["0","&half;","1","2","3","5","8","13","20","40","100","&infin;","?"];
+const USERNAME_TOKEN = 'agi-poker.username';
 
 function copyToClipboard(text) {
   const ta = document.createElement('textarea');
@@ -163,6 +164,21 @@ function playCard(cardElement) {
   updateCard(card);
 }
 
+function deleteStory(storyID) {
+  const answer = window.confirm('Are you sure you want to delete this story?');
+  if(!answer) {
+    return;
+  }
+  console.log("***DELETESTORY");
+  sendMessage({
+    room: currentRoom,
+    story: storyID,
+    date: Date.now(),
+    id: clientID,
+    type: "deletestory"
+  });
+}
+
 function replayStory(storyID) {
   console.log("***REPLAYSTORY");
   sendMessage({
@@ -204,11 +220,13 @@ function updatePlayerVotes(players, stories) {
   players.sort().forEach(player => {
     const tr = document.createElement('tr');
     let td = document.createElement('td');
+    td.className = 'room-player';
 
     td.innerText = player;
     tr.appendChild(td);
 
     td = document.createElement('td');
+    td.className = 'player-vote';
     if(currentStory) {
       const story = stories.find(s => s.storyID === currentStory);
       const card = CARD_DISPLAY[story.votes[player]];
@@ -243,6 +261,14 @@ function updateStories(stories) {
       };
     }
 
+    const deleteStoryButton = document.createElement('span');
+    deleteStoryButton.className = 'delete-story';
+    deleteStoryButton.innerHTML = '&times;';
+    deleteStoryButton.onclick = e => {
+      deleteStory(s.storyID);
+      e.cancelBubble = true;
+    };
+
     const result = document.createElement('input');
     result.type = 'number';
     result.min = 0;
@@ -274,6 +300,7 @@ function updateStories(stories) {
     footer.className = 'story-footer';
     footer.appendChild(vote);
     footer.appendChild(result);
+    footer.appendChild(deleteStoryButton);
 
     const div = document.createElement('div');
     div.id = 'story_' + s.storyID;
@@ -359,6 +386,7 @@ function connect() {
         document.getElementById("lobbyUsername").innerText = msg.name;
         document.getElementById("roomUsername").innerText = msg.name;
         username = document.getElementById("name").value;
+        localStorage.setItem(USERNAME_TOKEN, username);
         break;
       case "rejectusername":
         document.getElementById("name").focus();
@@ -378,6 +406,7 @@ function connect() {
           tr = document.createElement('tr');
           td = document.createElement('td');
           td.innerText = `${r.name} (${r.playerCount})`;
+          td.title = 'Click to enter room';
           td.onclick = () => joinRoom(r.name);
           tr.appendChild(td);
 
@@ -447,6 +476,12 @@ function enterKeyTriggersButton(sourceId, targetId) {
 window.onload = () => {
   enterKeyTriggersButton('name', 'login');
   enterKeyTriggersButton('roomName', 'createRoom');
+  const usernameElement = document.getElementById('name');
+  usernameElement.focus();
+  const oldUserName = localStorage.getItem(USERNAME_TOKEN);
+  if(oldUserName) {
+    usernameElement.value = oldUserName;
+  }
   document.body.onunload = () => {
     logout();
   };

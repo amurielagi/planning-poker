@@ -10,7 +10,7 @@
   <div id="loginPage" class="active">
     <h1>Planning poker</h1>
     <p>Username: 
-      <input type="text"   id="name" maxlength="12" placeholder="Your name">
+      <input type="text"   id="name" maxlength="20" placeholder="Your name...">
       <input type="button" id="login" name="login" value="Log in" onclick="connect()">
     </p>
     <div id="loginMessage"></div>
@@ -25,17 +25,17 @@
     </div>
     <div>
       <div class="-vertical-pad">
-        <input type="text"   id="roomName" maxlength="12" placeholder="Room name">
+        <input type="text"   id="roomName" maxlength="50" placeholder="Room name...">
         <input type="button" id="createRoom" value="Create room" onclick="createRoom()">
       </div>
-      <table class="-vertical-pad">
+      <div id="lobbyMessage"></div>
+      <table class="-vertical-pad" cellspacing="10">
         <thead>
           <th>Room name</th><th>&nbsp;</th>
         </thead>
         <tbody id="roomList">
         </tbody>
       </table>
-      <div id="lobbyMessage"></div>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
         <div class="-vertical-pad"><button onclick="backToLobby()">Back to Lobby</button></div>
         <div class="-vertical-pad"><span>ROOM: </span><span id="roomRoomname"></span></div>
         <div><span>USER: </span><span id="roomUsername"></span></div>
-        <table class="-vertical-pad">
+        <table id="playerVotesTable" class="-vertical-pad">
           <thead>
             <th>Player</th>
             <th>Card</th>
