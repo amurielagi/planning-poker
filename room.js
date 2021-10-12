@@ -59,6 +59,17 @@ class Room {
         }
     }
 
+    deleteStory(storyID) {
+        const story = this.stories.find(s => s.storyID === storyID);
+        if (story) {
+            if (this.currentStory === storyID) {
+                this.currentStory = null;
+            }
+            this.stories = this.stories.filter(s => s !== story);
+            this.sendRoomState();
+        }
+    }
+
     updateStoryResult(storyID, result) {
         const story = this.stories.find(s => s.storyID === storyID);
         if (story) {

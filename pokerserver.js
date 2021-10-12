@@ -229,6 +229,10 @@ wsServer.on('request', function(request) {
               room = rooms.find(r => r.name === msg.room);
               room.replayStory(msg.story);
               break;
+            case "deletestory":
+              room = rooms.find(r => r.name === msg.room);
+              room.deleteStory(msg.story);
+              break;
             case "showcards":
               room = rooms.find(r => r.name === msg.room);
               room.showCards(msg.story);
