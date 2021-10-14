@@ -88,6 +88,10 @@ class PokerRepository {
         this.db.run(`delete from story where story_id = ?`,[storyID]);
     }
 
+    removeAllStoriesInRoom(room) {
+        this.db.run(`delete from story where room = ?`,[room]);
+    }
+
     updateStoryCardsShown(storyID, shown) {
         this.db.run(`update story set cards_shown = ? where story_id = ?`,[shown? 1 : 0, storyID]);
     }

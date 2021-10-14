@@ -180,7 +180,9 @@ wsServer.on('request', function(request) {
               }
               break;
             case "deleteroom":
-              rooms = rooms.filter(r => r.name !== msg.room);
+              const roomToBeDeleted = rooms.find(r => r.name === msg.room);
+              roomToBeDeleted.remove(); 
+              rooms = rooms.filter(r => r !== roomToBeDeleted);
               sendRoomListToAll();
               break;
             case "newroom":

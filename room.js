@@ -21,6 +21,10 @@ class Room {
         this.send = (msg, players = this.players) => sendMessageToPlayers(msg, players);
     }
 
+    remove() {
+        repo.removeAllStoriesInRoom(this.name);
+    }
+
     sendRoomState(players) {
         this.send({
             type: 'roomstate',
