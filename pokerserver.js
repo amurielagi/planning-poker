@@ -1,18 +1,5 @@
 //#!/usr/bin/env node
 
-/*
-- UX
-- adding sqlite persistence
-*/
-
-
-//
-// WebSocket planning poker server
-// Implemented using Node.js
-//
-// Requires the websocket module.
-//
-
 "use strict";
 
 var https = require('https');
