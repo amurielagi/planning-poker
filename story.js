@@ -1,7 +1,5 @@
 const repo = require('./poker-repository.js');
 
-let nextStoryID = Date.now();
-
 class Story {
     static fromDB(s) {
         const story = new Story(s.text, s.room, s.storyID);
@@ -17,13 +15,7 @@ class Story {
         this.votes = {};
         this.cardsShown = false;
         this.result = null;
-        if(storyID) {
-            this.storyID = storyID;
-        }
-        else {
-            this.storyID = nextStoryID++;
-            repo.addStory(this);
-        }
+        this.storyID = storyID;
     }
 
     setResult(result) {

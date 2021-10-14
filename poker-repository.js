@@ -15,13 +15,12 @@ class PokerRepository {
 
         this.db.serialize(() => {
             this.db.run(`create table if not exists story(
+                story_id integer primary key autoincrement,
                 room text not null,
-                story_id int not null primary key,
-                seq int not null,
                 description text not null,
                 cards_shown int not null default 0,
                 result int,
-                unique (room, seq))`
+                unique (room, story_id))`
             );
             this.db.run(`create table if not exists player_vote(
                 story_id int not null references story(story_id) on delete cascade,
@@ -44,7 +43,7 @@ class PokerRepository {
                         votesPerStory[row.story_id] = votes;
                     });
                     
-                    this.db.all('select room, story_id, description, cards_shown, result from story order by room, seq', [], (err, rows) => {
+                    this.db.all('select room, story_id, description, cards_shown, result from story order by room, story_id', [], (err, rows) => {
                         err && reject(err);
                         const rooms = [];
                         let room = {};
@@ -70,18 +69,23 @@ class PokerRepository {
         });
     }
 
-    addStory(s) {
-        this.db.get(
-            'select max(seq) as lastseq from story where room = ?',
-            [s.room],
-            (err, row) => {
-                handleError(err);
-                const seq = row && row.lastseq ? row.lastseq + 1 : 1;
-                this.db.run(`insert into story(room, story_id, seq, description) values(?, ?, ?, ?)`,
-                    [s.room, s.storyID, seq, s.text]
-                );
-            }
-        );
+    addStories(stories) {
+        return new Promise((accept) => {
+            this.db.serialize(() => {
+                stories.forEach(story => {
+                    this.db.run(`insert into story(room, story_id, description) values(?, ?, ?)`,
+                        [story.room, story.storyID, story.text],
+                        function(err) {
+                            handleError(err);
+                            story.storyID = this.lastID;
+                            if(stories.every(s => s.storyID != null)) {
+                                accept();
+                            };
+                        }
+                    );
+                });
+            });
+        });
     }
 
     removeStory(storyID) {

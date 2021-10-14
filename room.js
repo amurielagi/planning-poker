@@ -111,14 +111,16 @@ class Room {
     }
 
     addStories(text) {
-        const newStories = text
+        const stories = text
             .split('\n')
             .map(t => t.trim())
             .filter(t => t)
             .map(t => new Story(t, this.name));
-        if (newStories.length > 0) {
-            this.stories.push(...newStories);
-            this.sendRoomState();
+        if (stories.length > 0) {
+            repo.addStories(stories).then(() => {
+                this.stories.push(...stories);
+                this.sendRoomState();
+            })
         }
     }
 
