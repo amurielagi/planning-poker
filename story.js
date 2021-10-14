@@ -1,26 +1,55 @@
+const repo = require('./poker-repository.js');
+
 let nextStoryID = Date.now();
 
 class Story {
-    constructor(text) {
+    static fromDB(s) {
+        const story = new Story(s.text, s.room, s.storyID);
+        story.votes = s.votes;
+        story.cardsShown = s.cardsShown;
+        story.result = s.result;
+        return story;
+    }
+
+    constructor(text, room, storyID) {
+        this.room = room;
         this.text = text;
         this.votes = {};
-        this.storyID = nextStoryID++;
         this.cardsShown = false;
         this.result = null;
+        if(storyID) {
+            this.storyID = storyID;
+        }
+        else {
+            this.storyID = nextStoryID++;
+            repo.addStory(this);
+        }
+    }
+
+    setResult(result) {
+        this.result = result;
+        repo.updateStoryResult(this.storyID, result);
+    }
+
+    remove() {
+        repo.removeStory(this.storyID);
     }
 
     addVote(player, card) {
         this.votes[player] = card;
+        if (card == null) {
+            repo.clearPlayerStoryVote(this.storyID, player);
+        }
+        else {
+            repo.updateStoryVote(this.storyID, player, card);
+        }
     }
 
     replay() {
         this.votes = {};
         this.cardsShown = false;
         this.result = null;
-    }
-
-    cleanPlayerVotes(player) {
-        delete this.votes[player];
+        repo.clearStoryVotes(this.storyID);
     }
 
     showCards(players) {
@@ -31,7 +60,9 @@ class Story {
         const size = sortedCards.length;
         if (size > 0 && sortedCards[0] === sortedCards[size - 1]) {
             this.result = sortedCards[0];
+            repo.updateStoryResult(this.storyID, this.result);
         }
+        repo.updateStoryCardsShown(this.storyID, true);
     }
 
     toJsonObject() {

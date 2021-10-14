@@ -98,7 +98,7 @@ function sendMessage(msg, targets = connections) {
   targets.forEach(c => c.sendUTF(msgStr));
 }
 
-console.log("***CRETING REQUEST HANDLER");
+console.log("***CREATING REQUEST HANDLER");
 wsServer.on('request', function(request) {
   console.log("Handling request from " + request.origin);
   if (!originIsAllowed(request.origin)) {
@@ -258,3 +258,7 @@ wsServer.on('request', function(request) {
   });
 });
 console.log("***REQUEST HANDLER CREATED");
+
+Room.roomsFromDB(sendMessageToPlayers).then(dbRooms => {
+  rooms = dbRooms;
+});

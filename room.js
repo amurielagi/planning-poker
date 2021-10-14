@@ -1,7 +1,18 @@
+var repo = require('./poker-repository.js');
 const Story = require('./story.js');
 const CARD_VALUE = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
 
 class Room {
+    static roomsFromDB(sendMessageToPlayers) {
+        return repo.getRooms().then(rooms => {
+            return rooms.map(r => {
+                const room = new Room(r.name, sendMessageToPlayers);
+                room.stories = r.stories.map(Story.fromDB);
+                return room;
+            });
+        });
+    }
+
     constructor(name, sendMessageToPlayers) {
         this.name = name;
         this.players = [];
@@ -66,6 +77,7 @@ class Room {
                 this.currentStory = null;
             }
             this.stories = this.stories.filter(s => s !== story);
+            story.remove();
             this.sendRoomState();
         }
     }
@@ -73,7 +85,7 @@ class Room {
     updateStoryResult(storyID, result) {
         const story = this.stories.find(s => s.storyID === storyID);
         if (story) {
-            story.result = result;
+            story.setResult(result);
             this.sendRoomState();
         }
     }
@@ -95,7 +107,11 @@ class Room {
     }
 
     addStories(text) {
-        const newStories = text.split('\n').map(t => t.trim()).filter(t => t).map(t => new Story(t));
+        const newStories = text
+            .split('\n')
+            .map(t => t.trim())
+            .filter(t => t)
+            .map(t => new Story(t, this.name));
         if (newStories.length > 0) {
             this.stories.push(...newStories);
             this.sendRoomState();
