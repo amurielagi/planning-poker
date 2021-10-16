@@ -173,11 +173,11 @@ wsServer.on('request', function(request) {
               sendRoomListToAll();
               break;
             case "newroom":
-              if (!isRoomNameUnique(msg.name)) {
+              if (!isRoomNameUnique(msg.room)) {
                 var nameRejectedMsg = {
                   id: msg.id,
                   type: "rejectroomname",
-                  name: msg.name
+                  name: msg.room
                 };
                 connect.sendUTF(JSON.stringify(nameRejectedMsg));
               }
@@ -185,11 +185,11 @@ wsServer.on('request', function(request) {
                 var nameAcceptedMsg = {
                   id: msg.id,
                   type: "acceptroomname",
-                  name: msg.name
+                  name: msg.room
                 };
                 connect.sendUTF(JSON.stringify(nameAcceptedMsg));
 
-                rooms.push(new Room(msg.name, sendMessageToPlayers));
+                rooms.push(new Room(msg.room, sendMessageToPlayers));
                 sendRoomListToAll();
               }
               break;
@@ -214,6 +214,7 @@ wsServer.on('request', function(request) {
             case "exportstories":
               room = rooms.find(r => r.name === msg.room);
               room.exportStories(connect.username);
+              break;
             case "replaystory":
               room = rooms.find(r => r.name === msg.room);
               room.replayStory(msg.story);

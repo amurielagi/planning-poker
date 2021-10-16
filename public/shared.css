@@ -16,31 +16,19 @@ body {
 }
 
 #loginPage {
-  display: none;
-  flex-direction: column;
-}
-
-#loginPage.active {
   display: flex;
+  flex-direction: column;
 }
 
 #lobbyPage {
-  display: none;
-  flex-direction: column;
-}
-
-#lobbyPage.active {
   display: flex;
+  flex-direction: column;
 }
 
 #roomPage {
-  display: none;
+  display: flex;
   flex-direction: column;
   flex-grow: 1;
-}
-
-#roomPage.active {
-  display: flex;
 }
 
 .-vertical-pad {
@@ -48,17 +36,13 @@ body {
 }
 
 .delete-button {
-  display: none;
+  display: inline-block;
   border: 1px solid red;
   color: red;
   padding: 0 0.2em 0 0.2em;
   border-radius: 1em;
   font-size: small;
   cursor: pointer;
-}
-
-.delete-button.active {
-  display: inline-block;
 }
 
 #roomList {

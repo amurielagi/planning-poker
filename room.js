@@ -17,7 +17,7 @@ class Room {
         this.name = name;
         this.players = [];
         this.stories = [];
-        this.currentStory = null;
+        this.currentStoryID = null;
         this.send = (msg, players = this.players) => sendMessageToPlayers(msg, players);
     }
 
@@ -31,7 +31,7 @@ class Room {
             room: this.name,
             players: this.players,
             stories: this.stories.map(s => s.toJsonObject()),
-            currentStory: this.currentStory
+            currentStoryID: this.currentStoryID
         }, players);
     }
 
@@ -60,7 +60,7 @@ class Room {
 
     selectStory(storyID) {
         if(this.stories.find(s => s.storyID === storyID)) {
-            this.currentStory = storyID;
+            this.currentStoryID = storyID;
             this.sendRoomState();
         }
     }
@@ -69,7 +69,7 @@ class Room {
         const story = this.stories.find(s => s.storyID === storyID);
         if (story) {
             story.replay();
-            this.currentStory = storyID;
+            this.currentStoryID = storyID;
             this.sendRoomState();
         }
     }
@@ -77,8 +77,8 @@ class Room {
     deleteStory(storyID) {
         const story = this.stories.find(s => s.storyID === storyID);
         if (story) {
-            if (this.currentStory === storyID) {
-                this.currentStory = null;
+            if (this.currentStoryID === storyID) {
+                this.currentStoryID = null;
             }
             this.stories = this.stories.filter(s => s !== story);
             story.remove();
