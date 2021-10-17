@@ -73,6 +73,14 @@ class PokerViewModel {
   get currentRoomName() { return this._currentRoomName(); }
   set currentRoomName(n) {this._currentRoomName(n); }
   
+  currentStoryText() {
+    if(vm.currentStoryID) {
+      const story = this.currentRoom.stories.find(s => s.storyID === vm.currentStoryID);
+      return story.text;
+    }
+    return '';
+  }
+
   connect() {
     this.service.connect();
   }

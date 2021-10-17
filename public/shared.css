@@ -20,19 +20,44 @@ body {
   flex-direction: column;
 }
 
-#lobbyPage {
+#roomPage {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-grow: 1;
 }
 
-#roomPage {
+.room-row {
+  padding: 0.5em;
+  background-color: white;
+  margin-bottom: 2px;
+}
+
+.-vertical-pad {
+  margin-top: 2em;
+}
+
+.max-height {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.-vertical-pad {
-  margin-top: 2em;
+.room-header {
+  display: flex;
+  flex-direction: row;
+}
+
+.room-header > div {
+  min-width: 15em;
+}
+
+.current-story {
+  margin-left: 6em;
+  margin-right: 3em;
+  background-color: #eee;
+  padding: 1em;
+  border-radius: 0.5em;
+  min-height: 4em;
 }
 
 .delete-button {
@@ -51,6 +76,16 @@ body {
 
 #playerVotesTable {
   text-align: left;
+  margin-left: 20em;
+  font-size: large;
+}
+
+#playerVotesTable th {
+  padding-bottom: 1em;
+}
+
+#playerVotesTable td {
+  padding-bottom: 0.5em;
 }
 
 #playerVotes {
@@ -66,13 +101,14 @@ body {
   text-align: center;
 }
 
-#roomList td {
+.room-cell {
   cursor: pointer;
+  padding-right: 1em;
 }
 
 .roomMain {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-grow: 1;
 }
 
@@ -83,7 +119,8 @@ body {
 .roomStoriesContainer {
   display: flex;
   flex-direction: column;
-  max-width: 60%;
+  max-width: 30em;
+  min-width: 30em;
 }
 
 .roomStoriesForm {
@@ -93,13 +130,19 @@ body {
   flex-direction: column;
 }
 
+.roomStoriesForm button {
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
 #cards {
+  border-top: 2px solid #eee;
   padding: 2em 0 2em 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-left: 6em;
-  margin-right: 6em;
+  margin-left: 1em;
+  margin-right: 3em;
 }
 
 #cards div {
@@ -112,10 +155,10 @@ body {
   border-color: goldenrod;
   border-style: solid;
   border-width: 2px;
-  max-width: 3em;
-  max-height: 4em;
-  width: 3em;
-  height: 4em;
+  max-width: 2.5em;
+  max-height: 3.5em;
+  width: 2.5em;
+  height: 3.5em;
 }
 
 #cards div.active {
@@ -166,16 +209,20 @@ body {
 }
 
 .scrollable {
-  border-top: 2px solid green;
-  border-bottom: 2px solid green;
+  background-color: #eee;
   overflow-y: auto;
   overflow-x: hidden;
   height: 0;
 }
 
+#roomStories {
+  padding: 0 0.5em;
+}
+
 #roomStories > div {
+  border-radius: 0.5em;
   margin-top: 0.5em;
-  padding: 0.5em;
+  padding: 1em;
   background-color: powderblue;
   border: 2px solid transparent;
 }

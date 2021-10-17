@@ -106,9 +106,6 @@ function connect() {
       case "roomstate":
         if (msg.room === vm.currentRoomName) {
           vm.currentRoom = msg;
-          if(vm.currentStoryID) {
-            document.getElementById('story_' + vm.currentStoryID).scrollIntoView();
-          }
         }
         break;
     }

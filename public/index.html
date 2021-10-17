@@ -22,14 +22,14 @@
     <div id="loginMessage" data-bind="html: loginMessage"></div>
   </div>
 
-  <div id="lobbyPage" data-bind="visible: currentPage() == 'lobbyPage'">
+  <div id="lobbyPage" class="max-height" data-bind="visible: currentPage() == 'lobbyPage'">
     <h1>Planning poker</h1>
     <div>LOBBY</div>
     <div>
       <span>USER: </span><span id="lobbyUsername" data-bind="text: username()"></span>
       <button data-bind="click: logout">Log out</button>
     </div>
-    <div>
+    <div class="max-height">
       <div class="-vertical-pad">
         <input type="text"   id="roomName" maxlength="50" placeholder="Room name..."
                data-bind="textInput: roomName,
@@ -38,38 +38,39 @@
         <input type="button" id="createRoom" value="Create room" data-bind="click:createRoom">
       </div>
       <div id="lobbyMessage" data-bind="html: lobbyMessage"></div>
-      <table class="-vertical-pad" cellspacing="10">
-        <thead>
-          <th>Room name</th><th>&nbsp;</th>
-        </thead>
+      <div class="max-height scrollable -vertical-pad">
         <!-- ko ifnot: lobbyRooms().length -->
-        <tbody id="roomList">
-          <tr><td><i>No rooms available</i></td></tr>
-        </tbody>
+        <div id="roomList">
+          <div><i>No rooms available</i></div>
+        </div>
         <!-- /ko -->
         <!-- ko if: lobbyRooms().length -->
-        <tbody id="roomList" data-bind="foreach: lobbyRooms">
-          <tr>
-            <td title="Click to enter room" data-bind="click: d => $parent.joinRoom(d)">
+        <div id="roomList" data-bind="foreach: lobbyRooms">
+          <div class="room-row">
+            <span class="room-cell" title="Click to enter room" data-bind="click: d => $parent.joinRoom(d)">
               <span data-bind="text: name"></span> (<span data-bind="text: playerCount"></span>)
-            </td>
-            <td>
+            </span>
+            <span class="room-cell">
               <span class="delete-button" data-bind="visible: playerCount === 0, click: (d,e) => $parent.deleteRoom(d,e)">Delete</span>
-            </td>
-          </tr>
-        </tbody>
+            </span>
+          </div>
+        </div>
         <!-- /ko -->
-      </table>
+      </div>
     </div>
   </div>
 
   <div id="roomPage" data-bind="visible: currentPage() == 'roomPage'">
     <div class="roomMain">
       <div class="-grow">
-        <h1>Planning poker</h1>
-        <div class="-vertical-pad"><button data-bind="click: backToLobby">Back to Lobby</button></div>
-        <div class="-vertical-pad"><span>ROOM: </span><span id="roomRoomname" data-bind="text: currentRoomName"></span></div>
-        <div><span>USER: </span><span id="roomUsername" data-bind="text: username()"></span></div>
+        <h1>Planning poker - <span id="roomRoomname" data-bind="text: currentRoomName"></span></h1>
+        <div class="room-header">
+          <div>
+            <div><b>USER: </b><span id="roomUsername" data-bind="text: username()"></span></div>
+            <div class="-vertical-pad"><button data-bind="click: backToLobby">Lobby</button></div>
+          </div>
+          <div class="current-story -grow" data-bind="text: currentStoryText()"></div>
+        </div>
         <table id="playerVotesTable" class="-vertical-pad">
           <thead>
             <th>Player</th>
@@ -83,38 +84,38 @@
           </tbody>
         </table>
       </div>
-      <div class="-grow roomStoriesContainer">
-        <div class="roomStoriesForm">
-          <textarea id="roomNewStories" placeholder="Add new stories here..." data-bind="textInput: newStoriesText"></textarea>
-          <div>
-            <button data-bind="click: addNewStories">Add Stories</button>
-            <button data-bind="click: exportStories">Export to Clipboard</button>
-          </div>
+      <div id="cards" data-bind="foreach: cards">
+        <div data-bind="click: d => $parent.playCard(d), css: {active: selected()}"><span data-bind="html: html"></span></div>
+      </div>
+    </div>
+    <div class="-grow roomStoriesContainer">
+      <div class="roomStoriesForm">
+        <textarea id="roomNewStories" rows="3" placeholder="Add new stories here..." data-bind="textInput: newStoriesText"></textarea>
+        <div>
+          <button data-bind="click: addNewStories">Add Stories</button>
+          <button data-bind="click: exportStories">Export to Clipboard</button>
         </div>
-        <div class="-grow scrollable">
-          <div id="roomStories" data-bind="foreach: currentRoom.stories">
-            <div data-bind="attr: {id: 'story_' + storyID},
-                            click: (d,e) => $parent.storyClick(d,e),
-                            css: $parent.storyCss($data)">
-              <div data-bind="text: text"></div>
-              <div class="story-footer">
-                <button class="play-story"
-                        data-bind="text: cardsShown ? 'Replay' : 'Show Cards',
-                                   click: (d,e) => $parent.storyButton(d,e)"></button>
-                <input class="story-result" type="number" min="0" max="100" maxlength="3"
-                       data-bind="value: storyResult,
-                                  click: (d,e) => e.cancelBubble = true,
-                                  enable: storyID === $parent.currentStoryID,
-                                  event: {keyup: $parent.evalStoryResult}">
-                <span class="delete-story" data-bind="click: (d,e) => $parent.deleteStory(d,e)">&times;</span>
-              </div>
+      </div>
+      <div class="-grow scrollable">
+        <div id="roomStories" data-bind="foreach: currentRoom.stories">
+          <div data-bind="attr: {id: 'story_' + storyID},
+                          click: (d,e) => $parent.storyClick(d,e),
+                          css: $parent.storyCss($data)">
+            <div data-bind="text: text"></div>
+            <div class="story-footer">
+              <button class="play-story"
+                      data-bind="text: cardsShown ? 'Replay' : 'Show Cards',
+                                 click: (d,e) => $parent.storyButton(d,e)"></button>
+              <input class="story-result" type="number" min="0" max="100" maxlength="3"
+                     data-bind="value: storyResult,
+                                click: (d,e) => e.cancelBubble = true,
+                                enable: storyID === $parent.currentStoryID,
+                                event: {keyup: $parent.evalStoryResult}">
+              <span class="delete-story" data-bind="click: (d,e) => $parent.deleteStory(d,e)">&times;</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="cards" data-bind="foreach: cards">
-      <div data-bind="click: d => $parent.playCard(d), css: {active: selected()}"><span data-bind="html: html"></span></div>
     </div>
   </div>
 </body>
