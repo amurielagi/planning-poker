@@ -54,7 +54,7 @@ class PokerService {
 
   logout() {
     console.log("***LOGOUT");
-    this.sendMessage('logout');
+    this.connection.close();
   }
   
   addNewStories(text) {

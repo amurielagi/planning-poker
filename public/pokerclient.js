@@ -23,6 +23,15 @@ function copyToClipboard(text) {
   }
 }
 
+function loggedOut() {
+  vm.currentPage('loginPage');
+  vm.loginButtonEnabled(true);
+  service.connection = null;
+  service.clientID = 0;
+  vm.currentRoomName = null;
+  vm.currentRoom = NULL_ROOM;
+}
+
 function connect() {
   if (service.connection) {
     service.setUsername(vm.username());
@@ -56,14 +65,6 @@ function connect() {
     console.dir(msg);
 
     switch(msg.type) {
-      case "loggedout":
-        vm.currentPage('loginPage');
-        vm.loginButtonEnabled(true);
-        service.connection = null;
-        service.clientID = 0;
-        vm.currentRoomName = null;
-        vm.currentRoom = NULL_ROOM;
-        break;
       case "id":
         service.clientID = msg.id;
         service.setUsername(vm.username());
@@ -111,7 +112,10 @@ function connect() {
     }
   };
   console.log("***CREATED ONMESSAGE");
+
+  service.connection.onclose = loggedOut;
 }
+
 
 const service = new PokerService(connect);
 const vm = new PokerViewModel(NULL_ROOM, service);
@@ -125,6 +129,6 @@ window.onload = () => {
   }
   ko.applyBindings(vm, document.body);
   document.body.onunload = () => {
-    service.logout();
+    service.connection.close();
   };
 };

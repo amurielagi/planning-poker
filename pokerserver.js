@@ -133,18 +133,6 @@ wsServer.on('request', function(request) {
           // handle it appropriately.
 
           switch(msg.type) {
-            case "logout":
-              rooms.forEach(room => {
-                room.unjoin(connect.username);
-              });
-              connections = connections.filter(c => c !== connect);
-              var logoutMsg = {
-                id: msg.id,
-                type: "loggedout"
-              };
-              connect.sendUTF(JSON.stringify(logoutMsg));
-              sendRoomListToAll();
-              break;
             // Username change request
             case "username":
               if (!isUsernameUnique(msg.name)) {
@@ -242,7 +230,14 @@ wsServer.on('request', function(request) {
   // Handle the WebSocket "close" event; this means a user has logged off
   // or has been disconnected.
   
-  connection.on('close', function(connection) {
+  connection.on('close', function() {
+    connections.filter(c => !c.connected).forEach(closedConnection => {
+      console.log('***CONNECTION CLOSED ' + closedConnection.username + ': ' + closedConnection.clientID);
+      rooms.forEach(room => {
+        room.unjoin(closedConnection.username);
+      });
+      sendRoomListToAll();
+    });
     connections = connections.filter(c => c.connected);
     console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
   });
