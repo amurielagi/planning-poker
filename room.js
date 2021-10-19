@@ -110,7 +110,7 @@ class Room {
         }
     }
 
-    addStories(text) {
+    addStories(text = '') {
         const stories = text
             .split('\n')
             .map(t => t.trim())

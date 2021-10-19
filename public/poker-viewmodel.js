@@ -7,16 +7,16 @@ class PokerViewModel {
   constructor (initialRoom, service) {
     this.service = service;
     this.currentPage = ko.observable('loginPage');
-    this.username = ko.observable();
+    this.username = ko.observable('');
     this.usernameFocus = ko.observable();
-    this.roomName = ko.observable();
+    this.roomName = ko.observable('');
     this.roomNameFocus = ko.observable();
     this.loginButtonEnabled = ko.observable(true);
-    this.loginMessage = ko.observable();
-    this.lobbyMessage = ko.observable();
+    this.loginMessage = ko.observable('');
+    this.lobbyMessage = ko.observable('');
     this.lobbyRooms = ko.observableArray();
-    this.newStoriesText = ko.observable();
-    this._currentRoomName = ko.observable();
+    this.newStoriesText = ko.observable('');
+    this._currentRoomName = ko.observable('');
     this._currentRoom = ko.observable(initialRoom);
     this.cards = CARD_DISPLAY.map((c, index) => {
       return {

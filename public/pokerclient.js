@@ -77,7 +77,7 @@ function connect() {
         break;
       case "rejectusername":
         vm.usernameFocus(true);
-        vm.loginMessage('<b>The username <em>" + msg.name + "</em> is already in use. Please provide another username and login again.</b><br>');
+        vm.loginMessage('<b>The username <em>' + msg.name + '</em> is already in use. Please provide another username and login again.</b><br>');
         break;
       case "acceptroomname":
         vm.roomName('');
@@ -85,7 +85,7 @@ function connect() {
         break;
       case "rejectroomname":
         vm.roomNameFocus(true);
-        vm.lobbyMessage('<b>The room name <em>" + msg.name + "</em> is already in use. Please provide another name and try again.</b><br>');
+        vm.lobbyMessage('<b>The room name <em>' + msg.name + '</em> is already in use. Please provide another name and try again.</b><br>');
         break;
       case "roomlist":
         vm.lobbyRooms(msg.rooms);

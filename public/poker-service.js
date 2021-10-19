@@ -1,5 +1,9 @@
 "use strict";
 
+function isEmpty(s) {
+  return !s || s.trim().length === 0;
+}
+
 class PokerService {
   constructor(connect) {
     this.connect = connect;
@@ -28,11 +32,17 @@ class PokerService {
   }
   
   setUsername(username) {
+    if(isEmpty(username)) {
+      return;
+    }
     console.log("***SETUSERNAME");
     this.sendMessage('username', {name: username});
   }
 
   createRoom(room) {
+    if(isEmpty(room)) {
+      return;
+    }
     console.log("***CREATEROOM");
     this.sendMessage('newroom',{room});
   }
@@ -58,6 +68,9 @@ class PokerService {
   }
   
   addNewStories(text) {
+    if(isEmpty(text)) {
+      return;
+    }
     console.log("***ADDNEWSTORIES");
     this.sendMessage('addstories',{text});
   }
