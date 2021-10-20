@@ -132,97 +132,102 @@ wsServer.on('request', function(request) {
           // Look at the received message type and
           // handle it appropriately.
 
-          switch(msg.type) {
-            // Username change request
-            case "username":
-              if (!isUsernameUnique(msg.name)) {
-                var nameRejectedMsg = {
-                  id: msg.id,
-                  type: "rejectusername",
-                  name: msg.name
-                };
-                connect.sendUTF(JSON.stringify(nameRejectedMsg));
-              }
-              else {
-                connect.username = msg.name;
-                var nameAcceptedMsg = {
-                  id: msg.id,
-                  type: "acceptusername",
-                  name: msg.name
-                };
-                connect.sendUTF(JSON.stringify(nameAcceptedMsg));
-                connect.sendUTF(JSON.stringify(makeRoomListMessage()));
-              }
-              break;
-            case "deleteroom":
-              const roomToBeDeleted = rooms.find(r => r.name === msg.room);
-              roomToBeDeleted.remove(); 
-              rooms = rooms.filter(r => r !== roomToBeDeleted);
-              sendRoomListToAll();
-              break;
-            case "newroom":
-              if (!isRoomNameUnique(msg.room)) {
-                var nameRejectedMsg = {
-                  id: msg.id,
-                  type: "rejectroomname",
-                  name: msg.room
-                };
-                connect.sendUTF(JSON.stringify(nameRejectedMsg));
-              }
-              else {
-                var nameAcceptedMsg = {
-                  id: msg.id,
-                  type: "acceptroomname",
-                  name: msg.room
-                };
-                connect.sendUTF(JSON.stringify(nameAcceptedMsg));
-
-                rooms.push(new Room(msg.room, sendMessageToPlayers));
+          try{
+            switch(msg.type) {
+              // Username change request
+              case "username":
+                if (!isUsernameUnique(msg.name)) {
+                  var nameRejectedMsg = {
+                    id: msg.id,
+                    type: "rejectusername",
+                    name: msg.name
+                  };
+                  connect.sendUTF(JSON.stringify(nameRejectedMsg));
+                }
+                else {
+                  connect.username = msg.name;
+                  var nameAcceptedMsg = {
+                    id: msg.id,
+                    type: "acceptusername",
+                    name: msg.name
+                  };
+                  connect.sendUTF(JSON.stringify(nameAcceptedMsg));
+                  connect.sendUTF(JSON.stringify(makeRoomListMessage()));
+                }
+                break;
+              case "deleteroom":
+                const roomToBeDeleted = rooms.find(r => r.name === msg.room);
+                roomToBeDeleted.remove(); 
+                rooms = rooms.filter(r => r !== roomToBeDeleted);
                 sendRoomListToAll();
-              }
-              break;
-            case "joinroom":
-              room = rooms.find(r => r.name === msg.room);
-              room.join(connect.username);
-              sendRoomListToAll();
-              break;
-            case "exitroom":
-              room = rooms.find(r => r.name === msg.room);
-              room.unjoin(connect.username);
-              sendRoomListToAll();
-              break;
-            case "playcard":
-              room = rooms.find(r => r.name === msg.room);
-              room.playCard(msg.story, connect.username, msg.card);
-              break;
-            case "selectstory":
-              room = rooms.find(r => r.name === msg.room);
-              room.selectStory(msg.story);
-              break;
-            case "exportstories":
-              room = rooms.find(r => r.name === msg.room);
-              room.exportStories(connect.username);
-              break;
-            case "replaystory":
-              room = rooms.find(r => r.name === msg.room);
-              room.replayStory(msg.story);
-              break;
-            case "deletestory":
-              room = rooms.find(r => r.name === msg.room);
-              room.deleteStory(msg.story);
-              break;
-            case "showcards":
-              room = rooms.find(r => r.name === msg.room);
-              room.showCards(msg.story);
-              break;
-            case "updatestoryresult":
-              room = rooms.find(r => r.name === msg.room);
-              room.updateStoryResult(msg.story, msg.result);
-              break;
-            case "addstories":
-              room = rooms.find(r => r.name === msg.room);
-              room.addStories(msg.text);
-              break;
+                break;
+              case "newroom":
+                if (!isRoomNameUnique(msg.room)) {
+                  var nameRejectedMsg = {
+                    id: msg.id,
+                    type: "rejectroomname",
+                    name: msg.room
+                  };
+                  connect.sendUTF(JSON.stringify(nameRejectedMsg));
+                }
+                else {
+                  var nameAcceptedMsg = {
+                    id: msg.id,
+                    type: "acceptroomname",
+                    name: msg.room
+                  };
+                  connect.sendUTF(JSON.stringify(nameAcceptedMsg));
+
+                  rooms.push(new Room(msg.room, sendMessageToPlayers));
+                  sendRoomListToAll();
+                }
+                break;
+              case "joinroom":
+                room = rooms.find(r => r.name === msg.room);
+                room.join(connect.username);
+                sendRoomListToAll();
+                break;
+              case "exitroom":
+                room = rooms.find(r => r.name === msg.room);
+                room.unjoin(connect.username);
+                sendRoomListToAll();
+                break;
+              case "playcard":
+                room = rooms.find(r => r.name === msg.room);
+                room.playCard(msg.story, connect.username, msg.card);
+                break;
+              case "selectstory":
+                room = rooms.find(r => r.name === msg.room);
+                room.selectStory(msg.story);
+                break;
+              case "exportstories":
+                room = rooms.find(r => r.name === msg.room);
+                room.exportStories(connect.username);
+                break;
+              case "replaystory":
+                room = rooms.find(r => r.name === msg.room);
+                room.replayStory(msg.story);
+                break;
+              case "deletestory":
+                room = rooms.find(r => r.name === msg.room);
+                room.deleteStory(msg.story);
+                break;
+              case "showcards":
+                room = rooms.find(r => r.name === msg.room);
+                room.showCards(msg.story);
+                break;
+              case "updatestoryresult":
+                room = rooms.find(r => r.name === msg.room);
+                room.updateStoryResult(msg.story, msg.result);
+                break;
+              case "addstories":
+                room = rooms.find(r => r.name === msg.room);
+                room.addStories(msg.text);
+                break;
+            }
+          }
+          catch(error) {
+            console.log("***ONMESSAGE:ERROR " + error.message);
           }
       }
   });

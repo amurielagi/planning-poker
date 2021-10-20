@@ -125,7 +125,7 @@ class Room {
     }
 
     resultDisplay(result) {
-        if (result < 0 || result >= CARD_VALUE.length) {
+        if (result == null || result < 0 || result >= CARD_VALUE.length) {
             return '';
         }
         return CARD_VALUE[result];
