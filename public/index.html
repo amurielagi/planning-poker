@@ -102,9 +102,10 @@
                           css: $parent.storyCss($data)">
             <div data-bind="text: text"></div>
             <div class="story-footer">
-              <button class="play-story"
-                      data-bind="text: cardsShown ? 'Replay' : 'Show Cards',
-                                 click: (d,e) => $parent.storyButton(d,e)"></button>
+              <button class="show-cards"
+                      data-bind="click: (d,e) => $parent.onShowCards(d,e)">Show Cards</button>
+              <button class="replay-story"
+                      data-bind="click: (d,e) => $parent.onReplayStory(d,e)">Replay</button>
               <input class="story-result" type="number" min="0" max="100" maxlength="3"
                      data-bind="value: storyResult,
                                 click: (d,e) => e.cancelBubble = true,

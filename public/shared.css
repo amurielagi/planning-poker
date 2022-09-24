@@ -194,15 +194,21 @@ body {
   cursor: pointer;
 }
 
-.selected.-cards-shown .play-story {
+.selected.-cards-shown .replay-story {
   display: block;
 }
 
-.selected.-show-cards .play-story {
+.selected.-can-show-cards .show-cards {
   display: block;
 }
 
-.play-story {
+.replay-story {
+  display: none;
+  position: absolute;
+  left: 10em;
+}
+
+.show-cards {
   display: none;
   position: absolute;
   left: 0;

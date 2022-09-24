@@ -132,13 +132,12 @@ class PokerViewModel {
     this.service.exportStories();
   }
 
-  storyButton(story, event) {
-    if(story.cardsShown) {
-      this.service.replayStory(story.storyID);
-    }
-    else {
-      this.service.showCards(story.storyID);
-    }
+  onShowCards(story, event) {
+    this.service.showCards(story.storyID);
+    event.cancelBubble = true;
+  }
+  onReplayStory(story, event) {
+    this.service.replayStory(story.storyID);
     event.cancelBubble = true;
   }
 
@@ -160,8 +159,8 @@ class PokerViewModel {
       if (story.cardsShown) {
         css += ' -cards-shown';
       }
-      if(Object.getOwnPropertyNames(story.votes).length > 0) {
-        css += ' -show-cards';
+      else if(Object.getOwnPropertyNames(story.votes).length > 0) {
+        css += ' -can-show-cards';
       }      
     }
     return css;
