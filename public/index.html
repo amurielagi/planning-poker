@@ -17,7 +17,7 @@
              data-bind="textInput: username,
                         hasFocus: usernameFocus,
                         event: {keyup: (d,e) => e.key === 'Enter' && connect()}">
-      <input type="button" id="login" name="login" value="Log in" data-bind="enable: loginButtonEnabled(), click: connect">
+      <button id="login" name="login" data-bind="enable: loginButtonEnabled(), click: connect">Log in</button>
     </p>
     <div id="loginMessage" data-bind="html: loginMessage"></div>
   </div>
@@ -34,7 +34,7 @@
                data-bind="textInput: roomName,
                           hasFocus: roomNameFocus,
                           event: {keyup: (d,e) => e.key === 'Enter' && createRoom()}">
-        <input type="button" id="createRoom" value="Create room" data-bind="click:createRoom">
+        <button id="createRoom" data-bind="click:createRoom">Create room</button>
       </div>
       <div id="lobbyMessage" data-bind="html: lobbyMessage"></div>
       <div class="max-height scrollable -vertical-pad">

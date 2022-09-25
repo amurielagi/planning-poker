@@ -13,6 +13,21 @@ body {
   margin: 0 0 0 1em;
   display: flex;
   flex-direction: column;
+  background-color: black;
+  color: white;
+}
+
+button {
+  background-color: seagreen;
+  color: white;
+}
+
+th, h1, b {
+  color: #777777;
+}
+
+#roomUsername, #lobbyUsername {
+  color: cadetblue
 }
 
 #loginPage {
@@ -28,7 +43,7 @@ body {
 
 .room-row {
   padding: 0.5em;
-  background-color: white;
+  background-color: #222222;
   margin-bottom: 2px;
 }
 
@@ -54,7 +69,7 @@ body {
 .current-story {
   margin-left: 6em;
   margin-right: 3em;
-  background-color: #eee;
+  background-color: #444444;
   padding: 1em;
   border-radius: 0.5em;
   min-height: 4em;
@@ -62,16 +77,21 @@ body {
 
 .delete-button {
   display: inline-block;
-  border: 1px solid red;
-  color: red;
-  padding: 0 0.2em 0 0.2em;
+  border: 1px solid crimson;
+  color: white;
+  background-color: crimson;
+  padding: 0 0.3em 0 0.3em;
   border-radius: 1em;
   font-size: small;
   cursor: pointer;
 }
 
+#lobbyMessage {
+  padding-top: 1em;
+}
+
 #roomList {
-  color: deepskyblue;
+  background-color: #222222;
 }
 
 #playerVotesTable {
@@ -93,7 +113,7 @@ body {
 }
 
 .room-player {
-  color: lightseagreen;
+  color: cadetblue;
   min-width: 10em;
 }
 
@@ -153,6 +173,7 @@ body {
   justify-content: center;
   border-radius: 0.5em;
   border-color: goldenrod;
+  background-color: #222222;
   border-style: solid;
   border-width: 2px;
   max-width: 2.5em;
@@ -163,7 +184,7 @@ body {
 
 #cards div.active {
   border-color: green;
-  background-color: wheat;
+  background-color: goldenrod;
   font-weight: bold;
 }
 
@@ -215,7 +236,7 @@ body {
 }
 
 .scrollable {
-  background-color: #eee;
+  background-color: #333333;
   overflow-y: auto;
   overflow-x: hidden;
   height: 0;
@@ -229,12 +250,12 @@ body {
   border-radius: 0.5em;
   margin-top: 0.5em;
   padding: 1em;
-  background-color: powderblue;
+  background-color: #777777;
   border: 2px solid transparent;
 }
 
 #roomStories > div.selected {
-  background-color:lightgreen;
+  background-color:#555555;
   border-color: green;
 }
 
