@@ -70,21 +70,25 @@
           </div>
           <div class="current-story -grow" data-bind="text: currentStoryText()"></div>
         </div>
-        <table id="playerVotesTable" class="-vertical-pad">
-          <thead>
-            <th>Player</th>
-            <th>Card</th>
-          </thead>
-          <tbody id="playerVotes" data-bind="foreach: currentRoom.players.sort()">
-            <tr>
-              <td class="room-player" data-bind="text: $data"></td>
-              <td class="player-vote" data-bind="html: $parent.playerVote($data)"></td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="-center-content">
+          <table id="playerVotesTable" class="-vertical-pad">
+            <thead>
+              <th>Player</th>
+              <th>Card</th>
+            </thead>
+            <tbody id="playerVotes" data-bind="foreach: currentRoom.players.sort()">
+              <tr>
+                <td class="room-player" data-bind="text: $data"></td>
+                <td class="player-vote" data-bind="html: $parent.playerVote($data)"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      <div id="cards" data-bind="foreach: cards">
-        <div data-bind="click: d => $parent.playCard(d), css: {active: selected()}"><span data-bind="html: html"></span></div>
+      <div class="-center-content">
+        <div id="cards" data-bind="foreach: cards">
+          <div data-bind="click: d => $parent.playCard(d), css: {active: selected()}"><span data-bind="html: html"></span></div>
+        </div>
       </div>
     </div>
     <div class="-grow roomStoriesContainer">
