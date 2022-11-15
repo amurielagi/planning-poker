@@ -62,13 +62,18 @@
   <div id="roomPage" data-bind="visible: currentPage() == 'roomPage'">
     <div class="roomMain">
       <div class="-grow">
-        <h1>Planning poker - <span id="roomRoomname" data-bind="text: currentRoomName"></span></h1>
+        <div id="roomPageTitleRow">
+          <h1>Planning poker - <span id="roomRoomname" data-bind="text: currentRoomName"></span></h1>
+          <span data-bind="text: timerText()"></span>
+        </div>
         <div class="room-header">
           <div>
             <div><b>USER: </b><span id="roomUsername" data-bind="text: username()"></span></div>
-            <div class="-vertical-pad"><button data-bind="click: backToLobby">Lobby</button></div>
+            <div><button data-bind="click: backToLobby">Lobby</button></div>
+            <div><button data-bind="click: toggleWarning">Warning</button></div>
+            <div><button data-bind="click: decrementMinPerStory">-</button><span data-bind="text: currentRoom.minutesPerStory"></span><button data-bind="click: incrementMinPerStory">+</button> min(s)</div>
           </div>
-          <div class="current-story -grow" data-bind="text: currentStoryText()"></div>
+          <div class="current-story -grow" data-bind="text: currentStoryText(), css: {'-warning-pulse': currentRoom.warning}"></div>
         </div>
         <div class="-center-content">
           <table id="playerVotesTable" class="-vertical-pad">

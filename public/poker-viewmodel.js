@@ -6,6 +6,7 @@ const CARD_DISPLAY =["0","&half;","1","2","3","5","8","13","20","40","100","&inf
 class PokerViewModel {
   constructor (initialRoom, service) {
     this.service = service;
+    this.timeOffset = 0;
     this.currentPage = ko.observable('loginPage');
     this.username = ko.observable('');
     this.usernameFocus = ko.observable();
@@ -28,6 +29,8 @@ class PokerViewModel {
         })
       };
     });
+    this.timerText = ko.observable('');
+    setInterval(() => this.timerText(this.currentStoryTimeLeft()), 317);
   }
 
   get currentStoryID() { return this.currentRoom.currentStoryID; }
@@ -74,9 +77,27 @@ class PokerViewModel {
   set currentRoomName(n) {this._currentRoomName(n); }
   
   currentStoryText() {
-    if(vm.currentStoryID) {
-      const story = this.currentRoom.stories.find(s => s.storyID === vm.currentStoryID);
+    if(this.currentStoryID) {
+      const story = this.currentRoom.stories.find(s => s.storyID === this.currentStoryID);
       return story.text;
+    }
+    return '';
+  }
+
+  currentStoryTimeLeft() {
+    if(this.currentStoryID && this.currentRoom && this.currentRoom.minutesPerStory > 0) {
+      const story = this.currentRoom.stories.find(s => s.storyID === this.currentStoryID);
+      if (!story.startTime || story.storyResult() != null) {
+        return '';
+      }
+      let remaining = this.currentRoom.minutesPerStory * 60 - Math.floor((Date.now() - story.startTime - this.timeOffset) / 1000);
+      const sign = remaining < 0 ? '- ' : '';
+      remaining = Math.abs(remaining);
+      const seconds = remaining % 60;
+      let minutes = Math.floor(remaining / 60);
+      const hours = Math.floor(minutes / 60);
+      minutes = minutes % 60;
+      return sign + (hours > 0 ? hours + ':' + (minutes > 9 ? '' : '0') : '') + minutes + ':' + (seconds > 9 ? '' : '0') + seconds;
     }
     return '';
   }
@@ -105,9 +126,21 @@ class PokerViewModel {
     this.service.backToLobby(this.currentRoomName);
   }
 
+  toggleWarning() {
+    this.service.toggleWarning(this.currentRoomName);
+  }
+
+  incrementMinPerStory() {
+    this.service.addMinutesPerStory(this.currentRoomName, 1);
+  }
+
+  decrementMinPerStory() {
+    this.service.addMinutesPerStory(this.currentRoomName, -1);
+  }
+
   playerVote(player) {
-    if(vm.currentStoryID) {
-      const story = this.currentRoom.stories.find(s => s.storyID === vm.currentStoryID);
+    if(this.currentStoryID) {
+      const story = this.currentRoom.stories.find(s => s.storyID === this.currentStoryID);
       const card = CARD_DISPLAY[story.votes[player]];
       return card ? (story.cardsShown? card : '*') : '';
     }
@@ -154,7 +187,7 @@ class PokerViewModel {
 
   storyCss(story) {
     let css = '';
-    if(vm.currentStoryID === story.storyID) {
+    if(this.currentStoryID === story.storyID) {
       css += ' selected';
       if (story.cardsShown) {
         css += ' -cards-shown';
@@ -174,8 +207,8 @@ class PokerViewModel {
   }
 
   disposeStorySubs() {
-    vm.currentRoom.subs.forEach(sub => sub.dispose());
-    vm.currentRoom.subs.length = 0;
+    this.currentRoom.subs.forEach(sub => sub.dispose());
+    this.currentRoom.subs.length = 0;
   }
 
   logout() {

@@ -62,6 +62,11 @@ class PokerService {
     this.sendMessage('exitroom', {room});
   }
 
+  toggleWarning(room) {
+    console.log("***TOGGLEWARNING");
+    this.sendMessage('togglewarning', {room});
+  }
+
   logout() {
     console.log("***LOGOUT");
     this.connection.close();
@@ -98,6 +103,11 @@ class PokerService {
   replayStory(story) {
     console.log("***REPLAYSTORY");
     this.sendMessage('replaystory', {story});
+  }
+
+  addMinutesPerStory(room, minutes) {
+    console.log("***ADDMINUTESPERSTORY");
+    this.sendMessage('addminutesperstory', {room, minutes});
   }
   
   showCards(story) {

@@ -20,6 +20,7 @@ body {
 button {
   background-color: seagreen;
   color: white;
+  cursor: pointer;
 }
 
 th, h1, b {
@@ -160,6 +161,14 @@ th, h1, b {
   justify-content: center;
 }
 
+#roomPageTitleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 3em;
+  align-items: baseline;
+}
+
 #cards {
   border-top: 2px solid #eee;
   padding: 2em 0 2em 0;
@@ -263,6 +272,25 @@ th, h1, b {
 
 #roomName {
   width: 20em;
+}
+
+.-warning-pulse {
+  background-color: #444444;
+  animation-name: color;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes color {
+  0% {
+    background-color: #444444;
+  }
+  50% {
+    background-color: goldenrod;
+  }
+  100% {
+    background-color: #444444;
+  }
 }
 
 .mdn-disclaimer {

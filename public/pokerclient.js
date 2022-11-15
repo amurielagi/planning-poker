@@ -73,6 +73,7 @@ function connect() {
         vm.loginMessage('');
         vm.loginButtonEnabled(false);
         vm.currentPage('lobbyPage');
+        vm.timeOffset = msg.timeReference - Date.now();
         localStorage.setItem(USERNAME_TOKEN, vm.username());
         break;
       case "rejectusername":
