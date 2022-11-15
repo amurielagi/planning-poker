@@ -19,6 +19,8 @@ class Room {
         this.stories = [];
         this.currentStoryID = null;
         this.send = (msg, players = this.players) => sendMessageToPlayers(msg, players);
+        this.warning = false;
+        this.minutesPerStory = 5;
     }
 
     remove() {
@@ -31,8 +33,15 @@ class Room {
             room: this.name,
             players: this.players,
             stories: this.stories.map(s => s.toJsonObject()),
-            currentStoryID: this.currentStoryID
+            currentStoryID: this.currentStoryID,
+            warning: this.warning,
+            minutesPerStory: this.minutesPerStory
         }, players);
+    }
+
+    addMinutesPerStory(minutes) {
+        this.minutesPerStory = Math.max(0, this.minutesPerStory + minutes);
+        this.sendRoomState();
     }
 
     join(username) {
@@ -56,19 +65,25 @@ class Room {
         if (this.players.length !== playerCount) {
             this.sendRoomState();
         }
+        if (this.players.length === 0) {
+            this.warning = false;
+            this.currentStoryID = null;
+        }
     }
 
-    selectStory(storyID) {
-        if(this.stories.find(s => s.storyID === storyID)) {
+    selectStory(storyID, startTime) {
+        const story = this.stories.find(s => s.storyID === storyID);
+        if(story) {
+            story.startTime = startTime;
             this.currentStoryID = storyID;
             this.sendRoomState();
         }
     }
 
-    replayStory(storyID) {
+    replayStory(storyID, startTime) {
         const story = this.stories.find(s => s.storyID === storyID);
         if (story) {
-            story.replay();
+            story.replay(startTime);
             this.currentStoryID = storyID;
             this.sendRoomState();
         }
@@ -100,6 +115,11 @@ class Room {
             story.addVote(username, card);
             this.sendRoomState();
         }
+    }
+
+    toggleWarning() {
+        this.warning = !this.warning;
+        this.sendRoomState();
     }
 
     showCards(storyID) {

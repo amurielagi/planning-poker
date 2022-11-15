@@ -16,6 +16,7 @@ class Story {
         this.cardsShown = false;
         this.result = null;
         this.storyID = storyID;
+        this.startTime = null;
     }
 
     setResult(result) {
@@ -37,10 +38,11 @@ class Story {
         }
     }
 
-    replay() {
+    replay(startTime) {
         this.votes = {};
         this.cardsShown = false;
         this.result = null;
+        this.startTime = startTime;
         repo.clearStoryVotes(this.storyID);
     }
 

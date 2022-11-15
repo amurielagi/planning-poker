@@ -149,7 +149,8 @@ wsServer.on('request', function(request) {
                   var nameAcceptedMsg = {
                     id: msg.id,
                     type: "acceptusername",
-                    name: msg.name
+                    name: msg.name,
+                    timeReference: Date.now()
                   };
                   connect.sendUTF(JSON.stringify(nameAcceptedMsg));
                   connect.sendUTF(JSON.stringify(makeRoomListMessage()));
@@ -192,13 +193,17 @@ wsServer.on('request', function(request) {
                 room.unjoin(connect.username);
                 sendRoomListToAll();
                 break;
+              case "togglewarning":
+                room = rooms.find(r => r.name === msg.room);
+                room.toggleWarning();
+                break;
               case "playcard":
                 room = rooms.find(r => r.name === msg.room);
                 room.playCard(msg.story, connect.username, msg.card);
                 break;
               case "selectstory":
                 room = rooms.find(r => r.name === msg.room);
-                room.selectStory(msg.story);
+                room.selectStory(msg.story, Date.now());
                 break;
               case "exportstories":
                 room = rooms.find(r => r.name === msg.room);
@@ -206,7 +211,11 @@ wsServer.on('request', function(request) {
                 break;
               case "replaystory":
                 room = rooms.find(r => r.name === msg.room);
-                room.replayStory(msg.story);
+                room.replayStory(msg.story, Date.now());
+                break;
+              case "addminutesperstory":
+                room = rooms.find(r => r.name === msg.room);
+                room.addMinutesPerStory(msg.minutes);
                 break;
               case "deletestory":
                 room = rooms.find(r => r.name === msg.room);
